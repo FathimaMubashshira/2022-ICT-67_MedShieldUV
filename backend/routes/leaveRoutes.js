@@ -2,6 +2,7 @@ import express from "express";
 import LeaveRequest from "../models/LeaveRequest.js";
 import multer from "multer";
 import nodemailer from "nodemailer";
+import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -63,6 +64,7 @@ const transporter = nodemailer.createTransport({
 
 router.post(
   "/",
+  authMiddleware,
   upload.single("medicalProof"),
   async (req, res) => {
 
@@ -151,7 +153,7 @@ console.log("Email sent successfully");
 // GET ALL LEAVE REQUESTS
 // ===============================
 
-router.get("/", async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
 
   try {
 
@@ -173,7 +175,7 @@ router.get("/", async (req, res) => {
 // GET SINGLE LEAVE REQUEST
 // ===============================
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", authMiddleware, async (req, res) => {
 
   try {
 
@@ -197,7 +199,7 @@ router.get("/:id", async (req, res) => {
 // UPDATE LEAVE STATUS
 // ===============================
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authMiddleware, async (req, res) => {
 
   try {
 
@@ -228,7 +230,7 @@ router.put("/:id", async (req, res) => {
 // DELETE LEAVE REQUEST
 // ===============================
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
 
   try {
 

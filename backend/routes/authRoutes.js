@@ -1,5 +1,6 @@
 import express from "express";
 import User from "../models/User.js";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -44,20 +45,33 @@ router.post("/login", async (req, res) => {
 
     // HARD CODED ADMIN
     if (
-      registrationNumber === "ADMIN001" &&
-      password === "admin"
-    ) {
+  registrationNumber === "ADMIN001" &&
+  password === "admin"
+) {
 
-      return res.json({
-        message: "Admin Login Successful",
-        user: {
-          name: "Admin",
-          registrationNumber: "ADMIN001",
-          role: "admin"
-        }
-      });
+  const adminUser = {
+    name: "Admin",
+    registrationNumber: "ADMIN001",
+    role: "admin"
+  };
 
+  const token = jwt.sign(
+    {
+      role: "admin"
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1d"
     }
+  );
+
+  return res.json({
+    message: "Admin Login Successful",
+    token,
+    user: adminUser
+  });
+
+}
 
     // STUDENT LOGIN
     const user = await User.findOne({
@@ -80,8 +94,19 @@ router.post("/login", async (req, res) => {
 
     }
 
+  const token = jwt.sign({
+    id: user._id,
+    role: user.role
+  },
+  process.env.JWT_SECRET,
+  {
+    expiresIn: "1d"
+  }
+);
+
     res.json({
       message: "Login successful",
+      token,
       user
     });
 

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: "./.env" });
 
 import leaveRoutes from "./routes/leaveRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
