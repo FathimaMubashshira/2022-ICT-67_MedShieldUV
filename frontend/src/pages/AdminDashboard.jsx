@@ -84,21 +84,55 @@ export default function AdminDashboard() {
 useEffect(() => {
   fetchLeaves();
 }, []);
-  const updateStatus = async (id, status) => {
+  const updateStatus = async (
+  id,
+  status,
+  medicalStatus
+) => {
 
-    try {
+  // ADMIN CAN APPROVE ONLY
+  // AFTER MEDICAL APPROVAL
 
-      await API.put(`/leaves/${id}`, {
-        status
-      });
+  if (
+    status === "Approved" &&
+    medicalStatus !== "Approved"
+  ) {
 
-      fetchLeaves();
+    return alert(
+      "Medical Council has not approved this request"
+    );
 
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }
 
+  // ADMIN CAN REJECT ONLY
+  // AFTER MEDICAL REJECTION
+
+  if (
+    status === "Rejected" &&
+    medicalStatus !== "Rejected"
+  ) {
+
+    return alert(
+      "Admin can reject only after Medical Council rejection"
+    );
+
+  }
+
+  try {
+
+    await API.put(`/leaves/${id}`, {
+      adminStatus: status
+    });
+
+    fetchLeaves();
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
   const deleteLeave = async (id) => {
 
     try {
@@ -182,10 +216,35 @@ useEffect(() => {
   </p>
 
   <p>
-    <strong>Status :</strong>
-    {" "}
-    {leave.status}
-  </p>
+  <strong>Medical Council Status:</strong>
+  {" "}
+  {leave.medicalCouncilStatus}
+</p>
+
+<p>
+
+  <strong>Admin Status :</strong>
+
+  <span
+    style={{
+
+      color:
+        leave.adminStatus === "Approved"
+          ? "green"
+          : leave.adminStatus === "Rejected"
+          ? "red"
+          : "orange",
+
+      fontWeight: "bold"
+
+    }}
+  >
+
+    {leave.adminStatus}
+
+  </span>
+
+</p>
 
   <p>
 
@@ -201,21 +260,27 @@ useEffect(() => {
   </p>
 
   <button
-    onClick={() => updateStatus(leave._id, "Approved")}
+    onClick={() =>
+  updateStatus(
+    leave._id,
+    "Approved",
+    leave.medicalCouncilStatus
+  )
+}
   >
     Approve
   </button>
 
   <button
-    onClick={() => updateStatus(leave._id, "Rejected")}
+    onClick={() =>
+  updateStatus(
+    leave._id,
+    "Rejected",
+    leave.medicalCouncilStatus
+  )
+}
   >
     Reject
-  </button>
-
-  <button
-    onClick={() => deleteLeave(leave._id)}
-  >
-    Delete
   </button>
 
     </div>

@@ -134,8 +134,29 @@ export default function Dashboard() {
             </p>
 
             <p>
-              Status: {leave.status}
-            </p>
+
+  <strong>Status :</strong>
+
+  <span
+    style={{
+
+      color:
+        leave.adminStatus === "Approved"
+          ? "green"
+          : leave.adminStatus === "Rejected"
+          ? "red"
+          : "orange",
+
+      fontWeight: "bold"
+
+    }}
+  >
+
+    {leave.adminStatus}
+
+  </span>
+
+</p>
 
           </div>
         ))

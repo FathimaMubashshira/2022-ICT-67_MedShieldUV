@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import SubmitLeave from "./pages/SubmitLeave";
 import AdminDashboard from "./pages/AdminDashboard";
+import MedicalCouncilDashboard from "./pages/MedicalCouncilDashboard";
 
 function App() {
 
@@ -37,6 +38,11 @@ function App() {
         <Route
           path="/admin"
           element={<AdminDashboard />}
+        />
+
+        <Route
+          path="/medical"
+          element={<MedicalCouncilDashboard />}
         />
 
       </Routes>

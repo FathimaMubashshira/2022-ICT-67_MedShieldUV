@@ -18,6 +18,12 @@ export default function Login() {
     password: ""
   });
 
+  // MEDICALCOUNCIL FORM
+  const [medicalData, setMedicalData] = useState({
+    registrationNumber: "",
+    password: ""
+  });
+
   // STUDENT INPUT
   const handleStudentChange = (e) => {
 
@@ -33,6 +39,16 @@ export default function Login() {
 
     setAdminData({
       ...adminData,
+      [e.target.name]: e.target.value
+    });
+
+  };
+
+  // MEDICALCOUNCIL INPUT
+  const handleMedicalChange = (e) => {
+
+    setMedicalData({
+      ...medicalData,
       [e.target.name]: e.target.value
     });
 
@@ -115,6 +131,57 @@ export default function Login() {
     }
   };
 
+  //MEDICALCOUNCIL LOGIN
+  const handleMedicalLogin = async (e) => {
+
+  e.preventDefault();
+
+  try {
+
+    const response = await API.post(
+      "/auth/login",
+      medicalData
+    );
+
+    if (
+      response.data.user.role !==
+      "medicalCouncil"
+    ) {
+
+      return alert(
+        "Not Medical Council"
+      );
+
+    }
+
+    localStorage.setItem(
+      "token",
+      response.data.token
+    );
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(response.data.user)
+    );
+
+    alert(
+      "Medical Council Login Successful"
+    );
+
+    navigate("/medical");
+
+  } catch (error) {
+
+    console.log(error);
+
+    alert(
+      "Medical Council Login Failed"
+    );
+
+  }
+
+};
+
   return (
 
     <div>
@@ -189,6 +256,38 @@ export default function Login() {
         </form>
 
       </div>
+
+      {/* MEDICALCOUNCIL LOGIN */}
+
+      <hr />
+
+<div>
+
+  <h2>Medical Council Login</h2>
+
+  <form onSubmit={handleMedicalLogin}>
+
+    <input
+      type="text"
+      name="registrationNumber"
+      placeholder="Medical Council ID"
+      onChange={handleMedicalChange}
+    />
+
+    <input
+      type="password"
+      name="password"
+      placeholder="Password"
+      onChange={handleMedicalChange}
+    />
+
+    <button type="submit">
+      Medical Council Login
+    </button>
+
+  </form>
+
+</div>
 
     </div>
   );

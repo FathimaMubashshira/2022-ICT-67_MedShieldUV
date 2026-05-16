@@ -24,10 +24,15 @@ const leaveRequestSchema = new mongoose.Schema({
   medicalProof: {
     type: String
   },
-  status: {
-    type: String,
-    default: "pending"
-  }
+  medicalCouncilStatus: {
+  type: String,
+  default: "Pending"
+},
+
+adminStatus: {
+  type: String,
+  default: "Pending"
+}
 }, { timestamps: true });
 
 export default mongoose.model("LeaveRequest", leaveRequestSchema);

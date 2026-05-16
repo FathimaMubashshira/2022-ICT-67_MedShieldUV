@@ -73,6 +73,37 @@ router.post("/login", async (req, res) => {
 
 }
 
+// HARD CODED MEDICAL COUNCIL
+
+if (
+  registrationNumber === "MED001" &&
+  password === "medical"
+) {
+
+  const medicalUser = {
+    name: "Medical Council",
+    registrationNumber: "MED001",
+    role: "medicalCouncil"
+  };
+
+  const token = jwt.sign(
+    {
+      role: "medicalCouncil"
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1d"
+    }
+  );
+
+  return res.json({
+    message: "Medical Council Login Successful",
+    token,
+    user: medicalUser
+  });
+
+}
+
     // STUDENT LOGIN
     const user = await User.findOne({
       registrationNumber

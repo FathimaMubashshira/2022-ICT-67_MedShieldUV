@@ -84,7 +84,9 @@ export default function SubmitLeave() {
       data
     );
 
-    alert("Leave Submitted Successfully");
+    alert("Leave Request Submitted Successfully");
+
+    navigate("/dashboard");
 
   } catch (error) {
 
