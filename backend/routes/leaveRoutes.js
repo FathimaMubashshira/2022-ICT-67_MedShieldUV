@@ -49,7 +49,7 @@ const transporter = nodemailer.createTransport({
 
   auth: {
 
-    user: "medshielduv@gemail.com",
+    user: "medshielduv@gmail.com",
 
     pass: "spxymrrvyjenzgoj"
 
@@ -131,12 +131,8 @@ Reason: ${leave.reason}`
 
 }
 
-console.log(info);
-
-console.log("Email sent successfully");
-
       // RESPONSE
-      res.status(201).json(leave);
+  res.status(201).json(leave);
 
     } catch (error) {
 
