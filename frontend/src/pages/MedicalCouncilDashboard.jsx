@@ -19,7 +19,6 @@ export default function MedicalCouncilDashboard() {
       navigate("/");
 
       return;
-
     }
 
     if (user.role !== "medicalCouncil") {
