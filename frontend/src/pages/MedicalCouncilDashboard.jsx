@@ -10,28 +10,39 @@ export default function MedicalCouncilDashboard() {
 
   useEffect(() => {
 
-    const user = JSON.parse(
-      localStorage.getItem("user")
-    );
+  const token = localStorage.getItem("token");
 
-    if (!user) {
+  const user = JSON.parse(
+    localStorage.getItem("user")
+  );
 
-      navigate("/");
+  // NO TOKEN
+  if (!token) {
 
-      return;
-    }
+    alert("Please login first");
 
-    if (user.role !== "medicalCouncil") {
+    navigate("/");
 
-      alert("Access denied");
+    return;
 
-      navigate("/");
+  }
 
-    }
+  // NOT MEDICAL COUNCIL
+  if (
+    user.role !== "medicalCouncil"
+  ) {
 
-    fetchLeaves();
+    alert("Access denied");
 
-  }, []);
+    navigate("/");
+
+    return;
+
+  }
+
+  fetchLeaves();
+
+}, []);
 
   const fetchLeaves = async () => {
 
@@ -86,6 +97,18 @@ export default function MedicalCouncilDashboard() {
 
 };
 
+const handleLogout = () => {
+
+  localStorage.removeItem("user");
+
+  localStorage.removeItem("token");
+
+  alert("Logged out successfully");
+
+  navigate("/");
+
+};
+
   return (
 
     <div>
@@ -105,17 +128,48 @@ export default function MedicalCouncilDashboard() {
             }}
           >
 
-            <h3>
-              {leave.studentName}
-            </h3>
-
             <p>
-              {leave.registrationNumber}
-            </p>
+  <strong>Student Name :</strong>
+  {" "}
+  {leave.studentName}
+</p>
 
-            <p>
-              {leave.reason}
-            </p>
+<p>
+  <strong>Registration Number :</strong>
+  {" "}
+  {leave.registrationNumber}
+</p>
+
+<p>
+  <strong>Medical Reason :</strong>
+  {" "}
+  {leave.reason}
+</p>
+
+<p>
+  <strong>From Date :</strong>
+  {" "}
+  {new Date(leave.fromDate).toLocaleDateString()}
+</p>
+
+<p>
+  <strong>To Date :</strong>
+   {" "}
+  {new Date(leave.toDate).toLocaleDateString()}
+</p>
+
+  <p>
+
+  <strong>Medical Proof :</strong>
+
+  <a
+    href={`http://localhost:5000/uploads/${leave.medicalProof}`}
+    target="_blank"
+  >
+    View File
+  </a>
+
+</p>
 
             <p>
 
@@ -143,24 +197,32 @@ export default function MedicalCouncilDashboard() {
 </p>
 
             <button
-              onClick={() =>
-                updateMedicalStatus(
-                  leave._id,
-                  "Approved"
-                )
-              }
-            >
-              Approve
-            </button>
+  disabled={
+    leave.medicalCouncilStatus !==
+    "Pending"
+  }
+  onClick={() =>
+    updateMedicalStatus(
+      leave._id,
+      "Approved"
+    )
+  }
+>
+  Approve
+</button>
 
             <button
-              onClick={() =>
-                updateMedicalStatus(
-                  leave._id,
-                  "Rejected"
-                )
-              }
-            >
+  disabled={
+    leave.medicalCouncilStatus !==
+    "Pending"
+  }
+  onClick={() =>
+    updateMedicalStatus(
+      leave._id,
+      "Rejected"
+    )
+  }
+>
               Reject
             </button>
 

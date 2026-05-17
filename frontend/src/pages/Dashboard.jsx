@@ -32,7 +32,7 @@ export default function Dashboard() {
 
     const user = JSON.parse(
       localStorage.getItem("user")
-    );
+    ) || {};
 
     // FILTER ONLY CURRENT STUDENT
     const filteredLeaves = response.data.filter(
@@ -53,13 +53,33 @@ export default function Dashboard() {
 
   const token = localStorage.getItem("token");
 
+  const user = JSON.parse(
+    localStorage.getItem("user")
+  );
+
+  // NO TOKEN
   if (!token) {
 
     alert("Please login first");
 
     navigate("/");
 
+    return;
+
   }
+
+  // NOT STUDENT
+  if (user.role !== "student") {
+
+    alert("Access denied");
+
+    navigate("/");
+
+    return;
+
+  }
+
+  fetchLeaves();
 
 }, []);
 

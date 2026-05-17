@@ -7,21 +7,24 @@ export default function AdminDashboard() {
 
     useEffect(() => {
 
+  const token = localStorage.getItem("token");
+
   const user = JSON.parse(
     localStorage.getItem("user")
   );
 
-  // IF NO USER
-  if (!user) {
+  // NO TOKEN
+  if (!token) {
 
     alert("Please login first");
 
     navigate("/");
 
     return;
+
   }
 
-  // IF NOT ADMIN
+  // NOT ADMIN
   if (user.role !== "admin") {
 
     alert("Access denied");
@@ -29,7 +32,10 @@ export default function AdminDashboard() {
     navigate("/");
 
     return;
+
   }
+
+  fetchLeaves();
 
 }, []);
 
@@ -260,28 +266,60 @@ useEffect(() => {
   </p>
 
   <button
-    onClick={() =>
-  updateStatus(
-    leave._id,
-    "Approved",
-    leave.medicalCouncilStatus
-  )
-}
-  >
-    Approve
-  </button>
+
+  style={{
+    opacity:
+      leave.medicalCouncilStatus !==
+      "Approved"
+        ? 0.5
+        : 1
+  }}
+
+  disabled={
+    leave.medicalCouncilStatus !==
+    "Approved"
+  }
+
+  onClick={() =>
+    updateStatus(
+      leave._id,
+      "Approved"
+    )
+  }
+
+>
+
+  Approve
+
+</button>
 
   <button
-    onClick={() =>
-  updateStatus(
-    leave._id,
-    "Rejected",
-    leave.medicalCouncilStatus
-  )
-}
-  >
-    Reject
-  </button>
+
+  style={{
+    opacity:
+      leave.medicalCouncilStatus !==
+      "Rejected"
+        ? 0.5
+        : 1
+  }}
+
+  disabled={
+    leave.medicalCouncilStatus !==
+    "Rejected"
+  }
+
+  onClick={() =>
+    updateStatus(
+      leave._id,
+      "Rejected"
+    )
+  }
+
+>
+
+  Reject
+
+</button>
 
     </div>
 </div>
