@@ -10,39 +10,37 @@ export default function MedicalCouncilDashboard() {
 
   useEffect(() => {
 
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-  const user = JSON.parse(
-    localStorage.getItem("user")
-  );
+    const user = JSON.parse(
+      localStorage.getItem("user")
+    );
 
-  // NO TOKEN
-  if (!token) {
+    if (!token) {
 
-    alert("Please login first");
+      alert("Please login first");
 
-    navigate("/");
+      navigate("/login");
 
-    return;
+      return;
 
-  }
+    }
 
-  // NOT MEDICAL COUNCIL
-  if (
-    user.role !== "medicalCouncil"
-  ) {
+    if (
+      user.role !== "medicalCouncil"
+    ) {
 
-    alert("Access denied");
+      alert("Access denied");
 
-    navigate("/");
+      navigate("/login");
 
-    return;
+      return;
 
-  }
+    }
 
-  fetchLeaves();
+    fetchLeaves();
 
-}, []);
+  }, []);
 
   const fetchLeaves = async () => {
 
@@ -83,155 +81,175 @@ export default function MedicalCouncilDashboard() {
 
   const deleteLeave = async (id) => {
 
-  try {
+    try {
 
-    await API.delete(`/leaves/${id}`);
+      await API.put(
+        `/leaves/delete/${id}`,
+        {
+          role: "medicalCouncil"
+        }
+      );
 
-    fetchLeaves();
+      fetchLeaves();
 
-  } catch (error) {
+    } catch (error) {
 
-    console.log(error);
+      console.log(error);
 
-  }
+    }
 
-};
+  };
 
-const handleLogout = () => {
+  const handleLogout = () => {
 
-  localStorage.removeItem("user");
+    localStorage.removeItem("user");
 
-  localStorage.removeItem("token");
+    localStorage.removeItem("token");
 
-  alert("Logged out successfully");
+    alert("Logged out successfully");
 
-  navigate("/");
+    navigate("/login");
 
-};
+  };
 
   return (
 
-    <div>
+    <div className="page-container">
 
-      <h1>Medical Council Dashboard</h1>
+      <h1 className="page-title">
+        Medical Council Dashboard
+      </h1>
 
       {
 
         leaves.map((leave) => (
 
-          <div
-            key={leave._id}
-            style={{
-              border: "1px solid gray",
-              marginBottom: "15px",
-              padding: "15px"
-            }}
-          >
+          <div className="card" key={leave._id}>
 
             <p>
-  <strong>Student Name :</strong>
-  {" "}
-  {leave.studentName}
-</p>
+              <strong>Student Name :</strong>
+              {" "}
+              {leave.studentName}
+            </p>
 
-<p>
-  <strong>Registration Number :</strong>
-  {" "}
-  {leave.registrationNumber}
-</p>
+            <p>
+              <strong>Registration Number :</strong>
+              {" "}
+              {leave.registrationNumber}
+            </p>
 
-<p>
-  <strong>Medical Reason :</strong>
-  {" "}
-  {leave.reason}
-</p>
+            <p>
+              <strong>Medical Reason :</strong>
+              {" "}
+              {leave.reason}
+            </p>
 
-<p>
-  <strong>From Date :</strong>
-  {" "}
-  {new Date(leave.fromDate).toLocaleDateString()}
-</p>
+            <p>
+              <strong>From Date :</strong>
+              {" "}
+              {new Date(
+                leave.fromDate
+              ).toLocaleDateString()}
+            </p>
 
-<p>
-  <strong>To Date :</strong>
-   {" "}
-  {new Date(leave.toDate).toLocaleDateString()}
-</p>
-
-  <p>
-
-  <strong>Medical Proof :</strong>
-
-  <a
-    href={`http://localhost:5000/uploads/${leave.medicalProof}`}
-    target="_blank"
-  >
-    View File
-  </a>
-
-</p>
+            <p>
+              <strong>To Date :</strong>
+              {" "}
+              {new Date(
+                leave.toDate
+              ).toLocaleDateString()}
+            </p>
 
             <p>
 
-  <strong>Medical Council Status :</strong>
+              <strong>Medical Proof :</strong>
 
-  <span
-    style={{
+              {" "}
 
-      color:
-        leave.medicalCouncilStatus === "Approved"
-          ? "green"
-          : leave.medicalCouncilStatus === "Rejected"
-          ? "red"
-          : "orange",
+              <a
+                href={`http://localhost:5000/uploads/${leave.medicalProof}`}
+                target="_blank"
+              >
+                View File
+              </a>
 
-      fontWeight: "bold"
+            </p>
 
-    }}
-  >
+            <p>
 
-    {leave.medicalCouncilStatus}
+              <strong>Medical Council Status :</strong>
 
-  </span>
+              {" "}
 
-</p>
+              <span
+                style={{
+                  color:
+                    leave.medicalCouncilStatus === "Approved"
+                      ? "green"
+                      : leave.medicalCouncilStatus === "Rejected"
+                      ? "red"
+                      : "orange",
+                  fontWeight: "bold"
+                }}
+              >
+
+                {leave.medicalCouncilStatus}
+
+              </span>
+
+            </p>
 
             <button
-  disabled={
-    leave.medicalCouncilStatus !==
-    "Pending"
-  }
-  onClick={() =>
-    updateMedicalStatus(
-      leave._id,
-      "Approved"
-    )
-  }
->
-  Approve
-</button>
 
-            <button
-  disabled={
-    leave.medicalCouncilStatus !==
-    "Pending"
-  }
-  onClick={() =>
-    updateMedicalStatus(
-      leave._id,
-      "Rejected"
-    )
-  }
->
-              Reject
+              className="approve-btn"
+
+              disabled={
+                leave.medicalCouncilStatus !==
+                "Pending"
+              }
+
+              onClick={() =>
+                updateMedicalStatus(
+                  leave._id,
+                  "Approved"
+                )
+              }
+            >
+
+              Approve
+
             </button>
 
             <button
-                onClick={() =>
-                    deleteLeave(leave._id)
-                }
+
+              className="reject-btn"
+
+              disabled={
+                leave.medicalCouncilStatus !==
+                "Pending"
+              }
+
+              onClick={() =>
+                updateMedicalStatus(
+                  leave._id,
+                  "Rejected"
+                )
+              }
             >
-                Delete
+
+              Reject
+
+            </button>
+
+            <button
+              className="delete-btn"
+              onClick={() =>
+                deleteLeave(leave._id)
+              }
+            >
+
+              Delete
+
             </button>
 
           </div>
@@ -240,9 +258,14 @@ const handleLogout = () => {
 
       }
 
-      <button onClick={handleLogout}>
+      <button
+        className="logout-btn"
+        onClick={handleLogout}
+      >
+
         Logout
-    </button>
+
+      </button>
 
     </div>
 

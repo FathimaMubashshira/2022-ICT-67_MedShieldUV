@@ -32,6 +32,15 @@ const leaveRequestSchema = new mongoose.Schema({
 adminStatus: {
   type: String,
   default: "Pending"
+},
+adminDeleted: {
+  type: Boolean,
+  default: false
+},
+
+medicalDeleted: {
+  type: Boolean,
+  default: false
 }
 }, { timestamps: true });
 

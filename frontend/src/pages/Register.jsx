@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import API from "../api";
 
 export default function Register() {
@@ -17,6 +18,7 @@ export default function Register() {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     try {
@@ -26,43 +28,67 @@ export default function Register() {
       alert("Registration Successful");
 
     } catch (error) {
+
       console.log(error);
+
       alert("Registration Failed");
+
     }
   };
 
   return (
-    <div>
-      <h1>Register</h1>
 
-      <form onSubmit={handleSubmit}>
+    <div className="page-container">
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          onChange={handleChange}
-        />
+      <h1 className="page-title">
+        Student Registration
+      </h1>
 
-        <input
-          type="text"
-          name="registrationNumber"
-          placeholder="Registration Number"
-          onChange={handleChange}
-        />
+      <div className="form-container">
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
+        <h2 className="form-title">
+          Create Account
+        </h2>
 
-        <button type="submit">
-            egister
-        </button>
+        <form onSubmit={handleSubmit}>
 
-      </form>
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            onChange={handleChange}
+          />
+          
+          <input
+            type="text"
+            name="registrationNumber"
+            placeholder="Registration Number"
+            onChange={handleChange}
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={handleChange}
+          />
+
+          <button type="submit">
+            Register
+          </button>
+
+        </form>
+
+        <p>
+          Already have account?
+          <Link to="/login">
+            Login
+          </Link>
+        </p>
+
+      </div>
+
     </div>
+
   );
 }

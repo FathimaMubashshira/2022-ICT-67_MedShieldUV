@@ -103,14 +103,14 @@ useEffect(() => {
 
     alert("Please login first");
 
-    navigate("/");
+    navigate("/login");
 
   }
 
 }, []);
 
   return (
-    <div>
+    <div className="form-container">
 
         <div style={{ textAlign: "left" }}>
 

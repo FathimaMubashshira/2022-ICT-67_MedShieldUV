@@ -226,26 +226,53 @@ router.put("/:id", authMiddleware, async (req, res) => {
 // DELETE LEAVE REQUEST
 // ===============================
 
-router.delete("/:id", authMiddleware, async (req, res) => {
+router.put(
+  "/delete/:id",
+  authMiddleware,
+  async (req, res) => {
 
-  try {
+    try {
 
-    await LeaveRequest.findByIdAndDelete(
-      req.params.id
-    );
+      const { role } = req.body;
 
-    res.json({
-      message: "Leave deleted successfully"
-    });
+      let updateData = {};
 
-  } catch (error) {
+      // ADMIN DELETE
 
-    res.status(500).json({
-      message: error.message
-    });
+      if (role === "admin") {
+
+        updateData.adminDeleted = true;
+
+      }
+
+      // MEDICAL COUNCIL DELETE
+
+      if (role === "medicalCouncil") {
+
+        updateData.medicalDeleted = true;
+
+      }
+
+      await LeaveRequest.findByIdAndUpdate(
+        req.params.id,
+        updateData,
+        { new: true }
+      );
+
+      res.json({
+        message: "Leave hidden successfully"
+      });
+
+    } catch (error) {
+
+      res.status(500).json({
+        message: error.message
+      });
+
+    }
 
   }
-});
+);
 
 
 export default router;

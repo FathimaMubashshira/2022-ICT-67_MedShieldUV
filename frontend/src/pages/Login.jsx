@@ -184,111 +184,116 @@ export default function Login() {
 
   return (
 
-    <div>
+  <div className="page-container">
 
-      <h1>MedShield UV Login Portal</h1>
+    <h1 className="page-title">
+      MedShieldUV Login Portal
+    </h1>
 
-      {/* STUDENT LOGIN */}
+    {/* STUDENT LOGIN */}
 
-      <div>
+    <div className="form-container">
 
-        <h2>Student Login</h2>
+      <h2 className="form-title">
+        Student Login
+      </h2>
 
-        <form onSubmit={handleStudentLogin}>
+      <form onSubmit={handleStudentLogin}>
 
-          <input
-            type="text"
-            name="registrationNumber"
-            placeholder="Student Registration Number"
-            onChange={handleStudentChange}
-          />
+        <input
+          type="text"
+          name="registrationNumber"
+          placeholder="Student Registration Number"
+          onChange={handleStudentChange}
+        />
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleStudentChange}
-          />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          onChange={handleStudentChange}
+        />
 
-          <button type="submit">
-            Student Login
-          </button>
+        <button type="submit">
+          Student Login
+        </button>
 
-          <p>
-            Don't have an account?
-            <Link to="/register">
-                Register Now
-            </Link>
-            </p>
+      </form>
 
-        </form>
-
-      </div>
-
-      <hr />
-
-      {/* ADMIN LOGIN */}
-
-      <div>
-
-        <h2>Admin Login</h2>
-
-        <form onSubmit={handleAdminLogin}>
-
-          <input
-            type="text"
-            name="registrationNumber"
-            placeholder="Admin ID"
-            onChange={handleAdminChange}
-          />
-
-          <input
-            type="password"
-            name="password"
-            placeholder="Admin Password"
-            onChange={handleAdminChange}
-          />
-
-          <button type="submit">
-            Admin Login
-          </button>
-
-        </form>
-
-      </div>
-
-      {/* MEDICALCOUNCIL LOGIN */}
-
-      <hr />
-
-<div>
-
-  <h2>Medical Council Login</h2>
-
-  <form onSubmit={handleMedicalLogin}>
-
-    <input
-      type="text"
-      name="registrationNumber"
-      placeholder="Medical Council ID"
-      onChange={handleMedicalChange}
-    />
-
-    <input
-      type="password"
-      name="password"
-      placeholder="Password"
-      onChange={handleMedicalChange}
-    />
-
-    <button type="submit">
-      Medical Council Login
-    </button>
-
-  </form>
-
-</div>
+      <p>
+        Don't have an account?
+        <Link to="/register">
+          Register Now
+        </Link>
+      </p>
 
     </div>
-  );
+
+    {/* ADMIN LOGIN */}
+
+    <div className="form-container">
+
+      <h2 className="form-title">
+        Admin Login
+      </h2>
+
+      <form onSubmit={handleAdminLogin}>
+
+        <input
+          type="text"
+          name="registrationNumber"
+          placeholder="Admin ID"
+          onChange={handleAdminChange}
+        />
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Admin Password"
+          onChange={handleAdminChange}
+        />
+
+        <button type="submit">
+          Admin Login
+        </button>
+
+      </form>
+
+    </div>
+
+    {/* MEDICAL LOGIN */}
+
+    <div className="form-container">
+
+      <h2 className="form-title">
+        Medical Council Login
+      </h2>
+
+      <form onSubmit={handleMedicalLogin}>
+
+        <input
+          type="text"
+          name="registrationNumber"
+          placeholder="Medical Council ID"
+          onChange={handleMedicalChange}
+        />
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          onChange={handleMedicalChange}
+        />
+
+        <button type="submit">
+          Medical Council Login
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+);
 }
